@@ -1,6 +1,6 @@
 import type { ConnectionResult, ScanPortResult, SshHost } from "../types/ssh.ts";
 
-const BASE_URL = 'https://ssh-config-manager-api-production.up.railway.app';
+const BASE_URL = 'https://ssh-config-manager-api-production.up.railway.app/api';
 
 export const api = {
 
