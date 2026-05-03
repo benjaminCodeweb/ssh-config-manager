@@ -7,16 +7,8 @@ import ScanPortModal from "./ScanPortModal";
 import { useSecurityCheck } from "../hooks/useSecurityCheck";
 import { SecurityModal } from "./SecurityModal";
 import {
-  Pencil,
-  Clipboard,
   Trash2,
-  Zap,
-  Radar,
-  Terminal,
-  Server,
-  KeyRound,
   Copy,
-  Network,
   Edit,
 } from "lucide-react";
 
@@ -39,7 +31,7 @@ function Detail({ label, value }: { label: string; value: string }) {
 
 export function HostCard({host, onEdit, onDelete, onCopy}:Props) {
    
-    const[scan, setScan] = useState<ScanPortResult[] | null>(null);
+    const[ , setScan] = useState<ScanPortResult[] | null>(null);
     const[showDiagnostic,setShowDiagnostic] = useState(false);
     const [showScan, setShowScan] = useState(false);
     const[scaning,setScaning] = useState(false);

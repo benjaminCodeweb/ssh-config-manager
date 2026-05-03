@@ -8,7 +8,7 @@ type AuthErrors = {
 export function useAuthValidation() {
   const [errors, setErrors] = useState<AuthErrors>({});
 
-  const validate = (email: string, password: string, mode: 'login' | 'register' = 'register'): boolean => {
+  const validate = (email: string, password: string, _mode: 'login' | 'register' = 'register'): boolean => {
     const newErrors: AuthErrors = {};
 
     if (!email)

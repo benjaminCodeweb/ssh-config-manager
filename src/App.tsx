@@ -17,7 +17,6 @@ function App() {
   const[deleteHost, setDeleteHost] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [editHost, setEditHost] = useState<SshHost | null | undefined>(undefined);
-  const[copyHost, setCopyHost] = useState<SshHost | null | undefined>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const params = new URLSearchParams(window.location.search);
@@ -95,7 +94,7 @@ if (resetToken) {
     
     navigator.clipboard.writeText(command).then(() => {
      toast.info('Comando copiado')
-    }).catch((err) => {
+    }).catch(() => {
     toast.error('error al copiar comando')
     })
 
