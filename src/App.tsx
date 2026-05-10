@@ -16,6 +16,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const[deleteHost, setDeleteHost] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const [editHost, setEditHost] = useState<SshHost | null | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,6 +44,15 @@ if (resetToken) {
     }
   };
 
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearch(searchInput);
+    }, 400)
+
+    return () => clearTimeout(timer);
+  },[searchInput]);
+
   const load = useCallback(async () => {
     try {
       setError(null);
@@ -60,7 +70,9 @@ if (resetToken) {
     }
   }, [search]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => { 
+    
+    load(); }, [load]);
 
   const handleSave = async (host: SshHost) => {
     try {
@@ -153,8 +165,8 @@ if (resetToken) {
           <input
             type="text"
             placeholder="Buscar por alias, host, user o tag..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
+            value={searchInput}
+            onChange={e => setSearchInput(e.target.value)}
             className="flex-1 bg-transparent outline-none font-mono text-sm text-gray-300 placeholder-gray-600 py-3"
           />
           {search && (
