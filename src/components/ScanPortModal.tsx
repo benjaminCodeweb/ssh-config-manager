@@ -14,6 +14,7 @@ export default function ScanPortModal({alias, onClose, onScan}: Props) {
   const [results, setResults] = useState<ScanPortResult[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const[showAll,setShowAll] = useState(false);
 
   const handleScan = async() => {
     if(to - from > 20){
@@ -99,28 +100,73 @@ export default function ScanPortModal({alias, onClose, onScan}: Props) {
 
         {/* Resultados */}
         {results && (
-          <div className="flex flex-col gap-2">
-            <p className="font-mono text-xs text-gray-500 uppercase tracking-wide">Resultados</p>
-            {results.map(result => (
-              <div
-                key={result.port}
-                className={`border rounded-lg p-3 flex items-center justify-between ${
-                  result.open
-                    ? 'text-green-400 border-green-500 bg-green-950'
-                    : 'text-red-400 border-red-500 bg-red-950'
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <span>{result.open ? '🔓' : '🔒'}</span>
-                  <span className="font-mono text-sm">Puerto {result.port}</span>
-                </div>
-                {result.latencyMs > 0 && (
-                  <span className="font-mono text-xs opacity-70">{result.latencyMs}ms</span>
-                )}
-              </div>
-            ))}
+  <div className="flex flex-col gap-3">
+    
+    {/* Resumen */}
+    <div className="flex items-center justify-between">
+      <p className="font-mono text-xs text-gray-500 uppercase tracking-wide">Resultados</p>
+      <div className="flex gap-3">
+        <span className="font-mono text-xs text-green-400">
+          {results.filter(r => r.open).length} abiertos
+        </span>
+        <span className="font-mono text-xs text-gray-600">
+          {results.filter(r => !r.open).length} cerrados
+        </span>
+      </div>
+    </div>
+
+    {/* Toggle */}
+    <div className="flex gap-2">
+      <button
+        onClick={() => setShowAll(false)}
+        className={`font-mono text-xs px-3 py-1 rounded-md border transition-colors ${
+          !showAll ? 'border-green-500 text-green-400 bg-green-950' : 'border-gray-700 text-gray-500'
+        }`}
+      >
+        Solo abiertos
+      </button>
+      <button
+        onClick={() => setShowAll(true)}
+        className={`font-mono text-xs px-3 py-1 rounded-md border transition-colors ${
+          showAll ? 'border-gray-500 text-gray-300' : 'border-gray-700 text-gray-500'
+        }`}
+      >
+        Todos
+      </button>
+    </div>
+
+    {/* Lista */}
+    <div className="flex flex-col gap-1 max-h-48 overflow-y-auto">
+      {results
+        .filter(r => showAll || r.open)
+        .map(result => (
+          <div
+            key={result.port}
+            className={`flex items-center justify-between px-3 py-2 rounded-lg ${
+              result.open
+                ? 'bg-green-950 border border-green-800'
+                : 'bg-gray-800 border border-gray-700'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-xs">{result.open ? '🔓' : '🔒'}</span>
+              <span className={`font-mono text-sm ${result.open ? 'text-green-400' : 'text-gray-500'}`}>
+                Puerto {result.port}
+              </span>
+            </div>
+            {result.latencyMs > 0 && (
+              <span className="font-mono text-xs text-gray-500">{result.latencyMs}ms</span>
+            )}
           </div>
-        )}
+        ))}
+      {!showAll && results.filter(r => r.open).length === 0 && (
+        <p className="font-mono text-xs text-gray-600 text-center py-4">
+          Ningún puerto abierto en este rango
+        </p>
+      )}
+    </div>
+  </div>
+)}
 
         <button
           onClick={onClose}
