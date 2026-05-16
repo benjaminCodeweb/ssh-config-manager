@@ -17,8 +17,8 @@ export default function ScanPortModal({alias, onClose, onScan}: Props) {
   const[showAll,setShowAll] = useState(false);
 
   const handleScan = async() => {
-    if(to - from > 20){
-      setError("El rango maximo es de 20 puertos");
+    if(to - from > 100){
+      setError("El rango maximo es de 100 puertos");
       return;
     }
 
