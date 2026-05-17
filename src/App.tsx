@@ -9,6 +9,7 @@ import ConfirmModal from "./components/ConfirmModal";
 import logo from './assets/logossh.png';
 
 import { ResetPasswordForm } from './components/ResetPassword';
+import ModalExport from "./components/ModalExport";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const params = new URLSearchParams(window.location.search);
+  const[showExport, setShowExport] = useState(false);
 const resetToken = params.get('token');
 
 if (resetToken) {
@@ -112,6 +114,16 @@ if (resetToken) {
 
 
   }
+  const handleExport = async(format: "json" | "ssh") => {
+    try{
+      await api.exportHosts(format);
+      toast.success("Hosts exportados correctamente")
+
+      setShowExport(false);
+    }catch(err){
+      toast.error('Error al exportar hosts');
+    }
+  }
 
   if (!isAuthenticated && !loading) {
     return <AuthForm onSuccess={handleLogin} />;
@@ -155,6 +167,12 @@ if (resetToken) {
   >
     Salir
   </button>
+  <button onClick={() => setShowExport(true)}>Exportar Hosts</button>
+  {showExport && (
+    <ModalExport
+    onExport={handleExport}
+    />
+  )}
 </div>
         
       </header>

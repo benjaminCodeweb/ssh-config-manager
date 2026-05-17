@@ -91,6 +91,24 @@ export const api = {
     return res.json();
   },
 
+  async exportHosts(format:'json' | 'ssh'):Promise<void>{
+    const endpoint = format === 'json' ? 'export-json' : 'export-ssh'
+    const res = await fetch(`${BASE_URL}/hosts/${endpoint}`,{
+      method: 'GET',
+      credentials: 'include'
+    });
+
+    if(!res.ok)throw new Error("Error al exportar hosts");
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = format == 'json' ? 'ssh-hosts-json' : 'ssh-config';
+    a.click();
+    URL.revokeObjectURL(url);
+
+  },
+
   async forgotPassword(email:string):Promise <void> {
     const res = await fetch(`${BASE_URL}/auth/forgot-password`, {
       method: 'POST',
@@ -116,5 +134,7 @@ export const api = {
 
 
   },
+
+  
 
 }

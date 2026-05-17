@@ -12,7 +12,6 @@ import {
   Edit,
 } from "lucide-react";
 
-
 interface Props {
     host: SshHost,
     onEdit: (host:SshHost) => void,
@@ -40,6 +39,9 @@ export function HostCard({host, onEdit, onDelete, onCopy}:Props) {
     const[diagnostic, setDiagnostic] = useState<ConnectionResult | null>(null);
     const warnings = useSecurityCheck(host);
     const[showSecurity,setShowSecurity] = useState(false);
+   
+
+
     
 
 
@@ -60,6 +62,8 @@ export function HostCard({host, onEdit, onDelete, onCopy}:Props) {
             setTesting(false);
         }
     };
+
+  
 
     const handleScan = async(from: number, to:number):  Promise<ScanPortResult[]> => {
       setScaning(true);
@@ -115,6 +119,8 @@ export function HostCard({host, onEdit, onDelete, onCopy}:Props) {
 >
   ⚡ Comandos
 </button>
+
+
 {showCommands && (
   <CommandGenerator host={host} onClose={() => setShowCommands(false)} />
 )}
